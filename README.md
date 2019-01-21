@@ -24,13 +24,9 @@ Just start the Python-script `python NeuralNet.py` and see the results. You can 
 You need to have **[numpy](http://www.numpy.org/)** and **[matplotlib](https://matplotlib.org/)** installed, nothing more. The code was tested with Python 3.6.4.
 
 ## Data for the training
-The data set is a numerical 2D set (points) with a third numerical label. The input dimension is not limited to two dimensions, however, for a better visualization at the end, the data must be 2D. One simple dataset is provided, namely
+The data set is a numerical 2D set (3D, one dimension (first) works as bias) with a fourth numerical label. The input dimension is not limited to two dimensions, however, for a better visualization at the end, the data must be in the form specified in the file. 
 
-- [data_moon.txt](/data/data_moon.txt)
-
-which consists of 500 2D-points arranged in two swirl-like, noisy patterns. If you like to use your own set of data points, please **note**: the class labels always need to be 1 and -1. Just stick to the structure of [data_moon.txt](/data/data_moon.txt).
-
-A random 80/20 split up of the training data provides the test data, the accuracy for the test data is also provided after training.
+A random 80/20 split up of the training data provides the test data, the accuracy for the test data is provided after training.
 
 ## Visualization
 The visualizations at the end show the development of the hinge loss during learning for each iteration and the classification in a contour map respectively. The drawn datapoints are both training and test data points, the probability for the class is shown as contour lines. 
