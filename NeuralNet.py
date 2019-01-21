@@ -4,13 +4,14 @@ import matplotlib.pyplot as plt
 '''
 Expects data in the form: (see also data_moon.txt)
 
-...                         ...                         ...
-8.558757427169911836e-01    3.152883206649254588e-01    -1.000000000000000000e+00
-1.910346694104992693e+00    1.986821953518217720e-01    1.000000000000000000e+00
-...                         ...                         ...
+...                         ...            
+1.000e+00 1.293e+00 -1.138e+00 -1.000e+00
+1.000e+00 -1.504e+00 1.451e+00 1.000e+00
+...                         ...           
 
 where the last column contains the class labels for each row. The class labels need 
 to be 1 and -1 and no more, as this is a binary classification neural network.
+
 
 Parameters that can be set are, next to the data source:
 
@@ -20,16 +21,16 @@ alpha               The learning parameter alpha, better leave about 0.05
 
 '''
 # PARAMETERS
-num_iterations = 200 # number of iterations to run the gradient descent for
+num_iterations = 500 # number of iterations to run the gradient descent for
 size_hidden_layer = 100
 alpha = 0.05
-data = np.loadtxt("data/data_moon.txt")
+data = np.loadtxt("data/data_2classes.txt")
 #
 np.random.shuffle(data)
 eighty_percent_index = int(round(len(data)*0.8))
 data_training, data_test = data[:eighty_percent_index,:], data[eighty_percent_index:,:]
-X_training, Y_training = data_training[:, :2], data_training[:, 2]
-X_test, Y_test = data_test[:, :2], data_test[:, 2]
+X_training, Y_training = data_training[:, :3], data_training[:, 3]
+X_test, Y_test = data_test[:, :3], data_test[:, 3]
 #
 h = [X_training.shape[1], size_hidden_layer, 1] # height of each layer
 W = [np.zeros((h[1], h[0])), np.zeros((h[2], h[1]))] # list of weight matrices for each layer
@@ -129,17 +130,17 @@ x1, x2 = np.meshgrid(point_range, point_range)
 X_grid = np.column_stack([x1.flatten(), x2.flatten()])
 Y_predicted = np.zeros(len(X_grid))
 for i in range(X_grid.shape[0]):
-    Y_predicted[i] = 0 if classifyDatapoint(np.array([X_grid[i][0], X_grid[i][1]])) < 0.0 else 1.0
-    Y_predicted[i] = classifyDatapoint(np.array([X_grid[i][0], X_grid[i][1]]))
+    Y_predicted[i] = 0 if classifyDatapoint(np.array([1.0, X_grid[i][0], X_grid[i][1]])) < 0.0 else 1.0
+    Y_predicted[i] = classifyDatapoint(np.array([1.0, X_grid[i][0], X_grid[i][1]]))
 
 # draw colormap
 colormap = plt.get_cmap('coolwarm')
 contour = plt.contourf(point_range, point_range, Y_predicted.reshape(len(point_range), len(point_range)), 25, cmap=colormap, vmin=0, vmax=1) # plot contourmap
 # draw scatter plot
 y_colored_training = ['orange' if c == 1.0 else 'purple' for c in Y_training]
-plt.scatter(X_training[:, 0], X_training[:, 1], c=y_colored_training, s=50, edgecolor="white", linewidth=1) # plot training data
+plt.scatter(X_training[:, 1], X_training[:, 2], c=y_colored_training, s=50, edgecolor="white", linewidth=1) # plot training data
 y_colored_test = ['orange' if c == 1.0 else 'purple' for c in Y_test]
-plt.scatter(X_test[:, 0], X_test[:, 1], c=y_colored_test, s=50, edgecolor="white", linewidth=1) # plot test data
+plt.scatter(X_test[:, 1], X_test[:, 2], c=y_colored_test, s=50, edgecolor="white", linewidth=1) # plot test data
 # draw loss chart
 f, ax3 = plt.subplots(figsize=(8, 6))
 ax3.plot(range(num_iterations), loss) # plot hinge loss development
